@@ -45,7 +45,7 @@ func New(o *Config) (*Dlock, error) {
 	var d Dlock
 	defaultConfig := api.DefaultConfig()
 	defaultConfig.Token = o.Token
-	consulClient, err := api.NewClient(api.DefaultConfig())
+	consulClient, err := api.NewClient(defaultConfig)
 	if err != nil {
 		logger.Println("error on creating consul client", err)
 		return &d, err
