@@ -31,6 +31,7 @@ type Config struct {
 	ConsulKey         string        // key on which lock to acquire
 	LockRetryInterval time.Duration // interval at which attempt is done to acquire lock
 	SessionTTL        time.Duration // time after which consul session will expire and release the lock
+	Token             string
 }
 
 var logger *log.Logger
@@ -42,7 +43,9 @@ func init() {
 // New returns a new Dlock object
 func New(o *Config) (*Dlock, error) {
 	var d Dlock
-	consulClient, err := api.NewClient(api.DefaultConfig())
+	defaultConfig := api.DefaultConfig()
+	defaultConfig.Token = o.Token
+	consulClient, err := api.NewClient(defaultConfig)
 	if err != nil {
 		logger.Println("error on creating consul client", err)
 		return &d, err
